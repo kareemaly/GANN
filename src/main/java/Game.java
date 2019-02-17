@@ -1,12 +1,15 @@
+import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Game extends BasicGame {
     ArrayList<Wall> walls = new ArrayList<>();
     ArrayList<Creature> creatures = new ArrayList<>();
+    ArrayList<Creature> deadCreatures = new ArrayList<>();
     private Info info;
     Game() {
         super("GANN");
@@ -32,7 +35,17 @@ public class Game extends BasicGame {
     }
 
     public void update(GameContainer gameContainer, int i) throws SlickException {
+        creatures.forEach(creature -> {
+            creature.update(walls);
 
+            boolean isDead = walls.stream().anyMatch(wall -> creature.collides(wall));
+
+            if (isDead) {
+                deadCreatures.add(creature);
+            }
+        });
+
+        creatures.removeAll(deadCreatures);
     }
 
     public void render(GameContainer gameContainer, Graphics graphics) throws SlickException {

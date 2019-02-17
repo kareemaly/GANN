@@ -2,6 +2,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 
 public class Wall extends GameObject {
     private Point location;
@@ -14,8 +15,12 @@ public class Wall extends GameObject {
         this.height = height;
     }
 
+    public Shape getCanvas() {
+        return new Rectangle(location.getX(), location.getY(), width, height);
+    }
+
     public void render(Graphics graphics) {
         graphics.setColor(Color.gray);
-        graphics.fill(new Rectangle(location.getX(), location.getY(), width, height));
+        graphics.fill(this.getCanvas());
     }
 }
